@@ -1,8 +1,6 @@
-import os
 import socket
 import sys
 import threading
-import time
 
 
 class Client(object):
@@ -14,6 +12,9 @@ class Client(object):
         self.active_users = []
 
     def start_connection_client(self):
+        """
+        Attempt to connect to the server
+        """
         try:
             self._client_socket.connect((self._host, self._port))
         except Exception as e:
@@ -44,7 +45,6 @@ class Client(object):
         print("[*][start_connection_client] Disconnected successfully")
 
     def send_messages(self, client_socket, client_name):
-
         print(f"\n------ Welcome {client_name} ------")
         print("The format to send message: [RelevantClient]:[Message]")
         print("To disconnect enter 'QUIT'")

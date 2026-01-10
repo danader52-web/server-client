@@ -14,7 +14,7 @@ class Server(object):
 
     def start(self):
         """
-
+        start the server and listen for incoming connections.
         """
         try:
             self._server.bind((self._host, self._port))
@@ -66,7 +66,7 @@ class Server(object):
                 data = client_socket.recv(1024).decode()
                 if not data:
                     break
-
+                # Validate message format (relevantClient:Message)
                 if ":" in data:
                     relevant_client, message = data.split(":", 1)
                     relevant_client = relevant_client.strip()
@@ -86,6 +86,9 @@ class Server(object):
         self.disconnect_client(sender_name, client_socket)
 
     def broadcast_user_list(self):
+        """
+        Send the updated list of active users to everyone
+        """
         with self.lock:
             payload = f'USERS LIST: {",".join(self.clients.keys())}\n'.encode()
             for name, curr_socket in list(self.clients.items()):
@@ -115,6 +118,9 @@ class Server(object):
                     print(f"[!][send_private_message] Error: client '{relevant_client}' not found for message from {sender_name}")
 
     def disconnect_client(self, client_name, client_socket):
+        """
+        Close socket and remove from the active clients list
+        """
         try:
             client_socket.close()
         except:
