@@ -87,7 +87,7 @@ class Server(object):
 
     def broadcast_user_list(self):
         with self.lock:
-            payload = f'USERS LIST: {",".join(self.clients.keys())}'.encode()
+            payload = f'USERS LIST: {",".join(self.clients.keys())}\n'.encode()
             for name, curr_socket in list(self.clients.items()):
                 try:
                     curr_socket.sendall(payload)
